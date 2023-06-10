@@ -18,7 +18,8 @@ import static com.example.checkers.Checkers.getPrimaryStage;
 public class Game {
     private Circle selectedCircle = null;
     public static boolean isWhiteTurn = true;
-
+    public static int capturesBlack = 0;
+    public static int capturesWhite = 0;
     public Game() {
         printBoard();
         printPawns();
@@ -44,6 +45,7 @@ public class Game {
     3. Jesli zaznaczone, przemiesc pionek na wybrane pole
      */
 
+    //Sprawdzenie czyja tura i czy klika w swoj pionek
     public boolean pawnIsValid(Circle pawn, int col, int row) {
         return (isWhiteTurn && ((Circle) arrayPawns[col][row]).getFill() == Color.WHITE) ||
                 (!isWhiteTurn && ((Circle) arrayPawns[col][row]).getFill() == Color.BLACK);
@@ -69,13 +71,144 @@ public class Game {
             {
                 movePawn(getSelectedCircle(), col, row);
                 isWhiteTurn = !isWhiteTurn;
+            } else if (rectangle.getFill() == Color.INDIANRED) {
+                capturePawn(getSelectedCircle(), col, row);
+
+                if (isWhiteTurn) {
+                    capturesWhite++;
+                } else {
+                    capturesBlack++;
+                }
+
+                isWhiteTurn = !isWhiteTurn;
             }
             setSelectedCircle(null);
             resetFieldColors();
         }
-//        rectangle.setFill(Color.GREEN);
     }
 
+    public void movePawn(Circle pawn, int col, int row) {
+        GridPane myBoard = getBoard();
+        myBoard.getChildren().remove(pawn);
+        myBoard.add(pawn, col, row);
+
+        Point2D p = findCoords(pawn);
+        int currentcol = (int) p.getX();
+        int currentrow = (int) p.getY();
+
+        Node temp = arrayPawns[currentcol][currentrow];
+        arrayPawns[currentcol][currentrow] = null;
+        arrayPawns[col][row] = temp;
+    }
+
+    public void capturePawn(Circle pawn, int col, int row) {
+        GridPane myBoard = getBoard();
+        Point2D p = findCoords(pawn);
+        int currentcol = (int) p.getX();
+        int currentrow = (int) p.getY();
+
+        movePawn(pawn, col, row);
+
+        Circle capturedPawn = null;
+        if (col>currentcol && row>currentrow) {
+            capturedPawn = (Circle) arrayPawns[currentcol+1][currentrow+1];
+            myBoard.getChildren().remove(capturedPawn);
+            arrayPawns[currentcol+1][currentrow+1] = null;
+
+        } else if (col<currentcol && row>currentrow) {
+            capturedPawn = (Circle) arrayPawns[currentcol-1][currentrow+1];
+            myBoard.getChildren().remove(capturedPawn);
+            arrayPawns[currentcol-1][currentrow+1] = null;
+
+        } else if (col>currentcol && row<currentrow) {
+            capturedPawn = (Circle) arrayPawns[currentcol+1][currentrow-1];
+            myBoard.getChildren().remove(capturedPawn);
+            arrayPawns[currentcol+1][currentrow-1] = null;
+
+        } else if (col<currentcol && row<currentrow) {
+            capturedPawn = (Circle) arrayPawns[currentcol-1][currentrow-1];
+            myBoard.getChildren().remove(capturedPawn);
+            arrayPawns[currentcol-1][currentrow-1] = null;
+        }
+    }
+
+    public boolean isCapturePossibleCheck(Circle pawn, int col, int row) {
+        boolean captures = false;
+        if (pawn.getFill() == Color.BLACK) {
+            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.WHITE && arrayPawns[col-2][row+2] == null) {
+                captures = true;
+            }
+            if (col < SIZE - 2 && row < SIZE - 2  && arrayPawns[col+1][row+1] != null && ((Circle)arrayPawns[col+1][row+1]).getFill() == Color.WHITE && arrayPawns[col+2][row+2] == null) {
+                captures = true;
+            }
+        }
+
+        if (pawn.getFill() == Color.WHITE) {
+            if (col>1 && row>1 && arrayPawns[col-1][row-1] != null && ((Circle)arrayPawns[col-1][row-1]).getFill() == Color.BLACK && arrayPawns[col-2][row-2] == null) {
+                captures = true;
+            }
+            if (col<SIZE-2 && row>1 && arrayPawns[col+1][row-1] != null && ((Circle)arrayPawns[col+1][row-1]).getFill() == Color.BLACK && arrayPawns[col+2][row-2] == null) {
+                captures = true;
+            }
+        }
+
+        return captures;
+    }
+
+    public boolean setCapturePossible(Circle pawn, int col, int row) {
+        boolean captures = false;
+        if (pawn.getFill() == Color.BLACK) {
+            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.WHITE &&
+                    arrayPawns[col-2][row+2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col-1][row+1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col-2][row+2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+            if (col < SIZE - 2 && row < SIZE - 2  && arrayPawns[col+1][row+1] != null && ((Circle)arrayPawns[col+1][row+1]).getFill() == Color.WHITE && arrayPawns[col+2][row+2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col+1][row+1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col+2][row+2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+        }
+
+        if (pawn.getFill() == Color.WHITE) {
+            if (col>1 && row>1 && arrayPawns[col-1][row-1] != null && ((Circle)arrayPawns[col-1][row-1]).getFill() == Color.BLACK && arrayPawns[col-2][row-2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col-1][row-1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col-2][row-2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+            if (col<SIZE-2 && row>1 && arrayPawns[col+1][row-1] != null && ((Circle)arrayPawns[col+1][row-1]).getFill() == Color.BLACK && arrayPawns[col+2][row-2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col+1][row-1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col+2][row-2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+        }
+
+        return captures;
+    }
+
+
+    public int checkCaptures() {
+        int moves = 0;
+        Circle pawn;
+        for (int row = 0; row < SIZE; row++){
+            for (int col = 0; col < SIZE; col++) {
+                if (arrayPawns[col][row]==null) continue;
+                pawn = (Circle) arrayPawns[col][row];
+                if (isWhiteTurn && pawn.getFill() == Color.WHITE && isCapturePossibleCheck(pawn, col, row)) moves++;
+                if (!isWhiteTurn && pawn.getFill() == Color.BLACK && isCapturePossibleCheck(pawn, col, row)) moves++;
+            }
+        }
+        return moves;
+    }
     public void resetFieldColors() {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
@@ -92,47 +225,40 @@ public class Game {
     }
 
     public int setPossibleMoves(Circle pawn, int col, int row) {
-        int moves = 0;
-        if (pawn.getFill() == Color.BLACK) {
-            if (col>0 && row<SIZE-1 && arrayPawns[col-1][row+1] == null) {
-                Rectangle rectangle = (Rectangle) arrayFields[col-1][row+1];
-                rectangle.setFill(Color.LIGHTBLUE);
-                moves++;
+
+        if (checkCaptures()==0) {
+
+            int moves = 0;
+            if (pawn.getFill() == Color.BLACK) {
+                if (col > 0 && row < SIZE - 1 && arrayPawns[col - 1][row + 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col - 1][row + 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
+                if (col < SIZE - 1 && row < SIZE - 1 && arrayPawns[col + 1][row + 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col + 1][row + 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
             }
-            if (col<SIZE-1 && row<SIZE-1 && arrayPawns[col+1][row+1] == null) {
-                Rectangle rectangle = (Rectangle) arrayFields[col+1][row+1];
-                rectangle.setFill(Color.LIGHTBLUE);
-                moves++;
+
+            if (pawn.getFill() == Color.WHITE) {
+                if (col > 0 && row > 0 && arrayPawns[col - 1][row - 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col - 1][row - 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
+                if (col < SIZE - 1 && row > 0 && arrayPawns[col + 1][row - 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col + 1][row - 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
             }
+            return moves;
+        } else {
+            setCapturePossible(pawn, col, row);
+            return 1;
         }
-
-        if (pawn.getFill() == Color.WHITE) {
-            if (col>0 && row>0 && arrayPawns[col-1][row-1] == null) {
-                Rectangle rectangle = (Rectangle) arrayFields[col-1][row-1];
-                rectangle.setFill(Color.LIGHTBLUE);
-                moves++;
-            }
-            if (col<SIZE-1 && row>0 && arrayPawns[col+1][row-1] == null) {
-                Rectangle rectangle = (Rectangle) arrayFields[col+1][row-1];
-                rectangle.setFill(Color.LIGHTBLUE);
-                moves++;
-            }
-        }
-        return moves;
-    }
-
-    public void movePawn(Circle pawn, int col, int row) {
-        GridPane myBoard = getBoard();
-        myBoard.getChildren().remove(pawn);
-        myBoard.add(pawn, col, row);
-
-        Point2D p = findCoords(pawn);
-        int currentcol = (int) p.getX();
-        int currentrow = (int) p.getY();
-
-        Node temp = arrayPawns[currentcol][currentrow];
-        arrayPawns[currentcol][currentrow] = null;
-        arrayPawns[col][row] = temp;
     }
 
     public Point2D findCoords(Circle pawn) {
