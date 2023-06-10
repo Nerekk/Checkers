@@ -1,54 +1,46 @@
 package com.example.checkers;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import static com.example.checkers.Board.SIZE;
-import static com.example.checkers.Board.TILE_SIZE;
+import static com.example.checkers.Board.*;
 import static com.example.checkers.Checkers.getPrimaryStage;
 
 public class Display {
+    private static Rectangle selectedCell;
 
-    private static Rectangle createSquare(boolean white) {
-        Rectangle square = new Rectangle(TILE_SIZE, TILE_SIZE);
-        if (white) {
-            square.setFill(Color.WHITE);
-            square.setStroke(Color.BLACK);
-        }
-        else {
-            square.setFill(Color.DARKRED);
-            square.setStroke(Color.BLACK);
-        }
-        return square;
-    }
-    public static void printBoard(){
-        Scene currentScene = getPrimaryStage().getScene();
-        String containerId = "gamescene";
-        Node container = currentScene.lookup("#" + containerId);
 
-        if (container instanceof AnchorPane) {
-            AnchorPane myContainer = (AnchorPane) container;
 
-            GridPane myBoard = new GridPane();
-            myBoard.setId("myboard");
 
-            for (int row = 0; row < SIZE; row++) {
-                for (int col = 0; col < SIZE; col++) {
-                    Rectangle square;
-                    if ((col + 2) % 2 == 0 && row % 2 == 0 || (col + 1) % 2 == 0 && row % 2 == 1) {
-                        square = createSquare(true);
-                    } else {
-                        square = createSquare(false);
-                    }
-                    myBoard.add(square, col, row);
-                }
-            }
-            myContainer.getChildren().add(myBoard);
-        }
-    }
+//    private static void handleCellClick(Rectangle cell) {
+//        if (selectedCell == null) {
+//            // Jeśli żaden pionek nie jest jeszcze zaznaczony, zaznacz bieżący pionek
+//            selectedCell = cell;
+//        } else {
+//            // Jeśli już jest zaznaczony pionek, przenieś go na nową pozycję
+//            int selectedRow = GridPane.getRowIndex(selectedCell);
+//            int selectedCol = GridPane.getColumnIndex(selectedCell);
+//            int newRow = GridPane.getRowIndex(cell);
+//            int newCol = GridPane.getColumnIndex(cell);
+//
+//            // Usuń zaznaczenie z poprzedniego pola
+//            selectedCell.setStroke(Color.BLACK);
+//            selectedCell = null;
+//
+//            // Przenieś pionek na nowe pole
+//            GridPane.setRowIndex(cell, selectedRow);
+//            GridPane.setColumnIndex(cell, selectedCol);
+//        }
+//    }
 }
