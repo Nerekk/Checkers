@@ -36,12 +36,12 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <Label fx:id="player2" layoutX="80.0" layoutY="32.0" text="Player 2">
+      <Label fx:id="player2" layoutX="80.0" layoutY="40.0" text="Player 2">
          <font>
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <ImageView fx:id="turnp2" fitHeight="32.0" fitWidth="27.0" layoutX="53.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="turnp2" fitHeight="32.0" fitWidth="27.0" layoutX="53.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../images/play.png" />
          </image>
@@ -51,7 +51,7 @@
             <Image url="@../../../images/play.png" />
          </image>
       </ImageView>
-      <Label fx:id="timer2" layoutX="221.0" layoutY="23.0" text="00:00">
+      <Label fx:id="timer2" layoutX="221.0" layoutY="31.0" text="00:00">
          <font>
             <Font size="45.0" />
          </font>
