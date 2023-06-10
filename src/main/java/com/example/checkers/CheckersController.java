@@ -1,5 +1,6 @@
 package com.example.checkers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -13,14 +14,6 @@ import javafx.stage.Screen;
 import static com.example.checkers.Checkers.getPrimaryStage;
 
 public class CheckersController {
-    @FXML
-    private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
     public static void setScene(String sceneFXML) {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -32,13 +25,13 @@ public class CheckersController {
         }
     }
 
-    @FXML
-    private void mouseEntered(MouseEvent e) {
-        Node source = (Node)e.getSource() ;
-        Integer colIndex = GridPane.getColumnIndex(source);
-        Integer rowIndex = GridPane.getRowIndex(source);
-        System.out.printf("Mouse entered cell [%d, %d]%n", colIndex.intValue(), rowIndex.intValue());
-    }
+//    @FXML
+//    private void mouseEntered(MouseEvent e) {
+//        Node source = (Node)e.getSource() ;
+//        Integer colIndex = GridPane.getColumnIndex(source);
+//        Integer rowIndex = GridPane.getRowIndex(source);
+//        System.out.printf("Mouse entered cell [%d, %d]%n", colIndex.intValue(), rowIndex.intValue());
+//    }
 
 
 }
