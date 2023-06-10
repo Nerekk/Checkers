@@ -16,12 +16,15 @@ import static com.example.checkers.Board.*;
 import static com.example.checkers.Checkers.getPrimaryStage;
 
 public class Game {
-    public Circle selectedCircle = null;
+    private Circle selectedCircle = null;
+    public static boolean isWhiteTurn = true;
 
     public Game() {
         printBoard();
         printPawns();
     }
+
+
 
     public Circle getSelectedCircle() {
         return selectedCircle;
@@ -36,25 +39,33 @@ public class Game {
     2. Jesli nie jest to pobierz pole i zakoncz metode
     3. Jesli zaznaczone, przemiesc pionek na wybrane pole
      */
+
+    public boolean pawnIsValid(Circle pawn, int col, int row) {
+        return (isWhiteTurn && ((Circle) arrayPawns[col][row]).getFill() == Color.WHITE) ||
+                (!isWhiteTurn && ((Circle) arrayPawns[col][row]).getFill() == Color.BLACK);
+    }
     public void handleCellClick(Rectangle rectangle, int col, int row) {
+        //Klikniecie z pionka na pionek
         if (getSelectedCircle()!=null && arrayPawns[col][row]!=null)
         {
             setSelectedCircle(null);
             resetFieldColors();
         }
 
-        if (getSelectedCircle()==null) {
+        //Pierwsze klikniecie
+        if (getSelectedCircle()==null && arrayPawns[col][row]!=null && pawnIsValid((Circle) arrayPawns[col][row], col, row)) {
             setSelectedCircle((Circle) arrayPawns[col][row]);
 
-            if (arrayPawns[col][row]!=null)
-            {
-                int moves = setPossibleMoves((Circle) arrayPawns[col][row], col, row);
-                if (moves == 0) setSelectedCircle(null);
-            }
-
+            int moves = setPossibleMoves((Circle) arrayPawns[col][row], col, row);
+            if (moves == 0) setSelectedCircle(null);
         }
+        //Drugie klikniecie
         else {
-            if (rectangle.getFill() == Color.LIGHTBLUE) movePawn(getSelectedCircle(), col, row);
+            if (rectangle.getFill() == Color.LIGHTBLUE)
+            {
+                movePawn(getSelectedCircle(), col, row);
+                isWhiteTurn = !isWhiteTurn;
+            }
             setSelectedCircle(null);
             resetFieldColors();
         }
@@ -114,6 +125,7 @@ public class Game {
         Point2D p = findCoords(pawn);
         int currentcol = (int) p.getX();
         int currentrow = (int) p.getY();
+
         Node temp = arrayPawns[currentcol][currentrow];
         arrayPawns[currentcol][currentrow] = null;
         arrayPawns[col][row] = temp;
