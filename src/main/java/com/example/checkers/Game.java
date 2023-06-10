@@ -212,6 +212,11 @@ public class Game {
             myBoard.setId("myboard");
             myBoard.setAlignment(Pos.CENTER);
 
+            int x = ((800 - 640) / 2)-5;
+            int y = (900 - 640) / 2;
+            myBoard.setLayoutX(x);
+            myBoard.setLayoutY(y);
+
             for (int row = 0; row < SIZE; row++) {
                 for (int col = 0; col < SIZE; col++) {
                     Rectangle square;
