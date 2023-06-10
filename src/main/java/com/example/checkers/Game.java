@@ -22,6 +22,10 @@ public class Game {
     public Game() {
         printBoard();
         printPawns();
+
+        Runnable gameloop = new GameLoop();
+        Thread thread = new Thread(gameloop);
+        thread.start();
     }
 
 
