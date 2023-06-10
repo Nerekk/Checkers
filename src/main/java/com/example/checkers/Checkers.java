@@ -1,11 +1,10 @@
 package com.example.checkers;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 
 import java.io.IOException;
 
@@ -28,6 +27,14 @@ public class Checkers extends Application {
         stage.setScene(scene);
         stage.show();
         Game game = new Game();
+        primaryStage.setOnCloseRequest(event -> {
+            closeApp();
+        });
+    }
+    private void closeApp() {
+        System.out.println("Zamykanie aplikacji...");
+        Platform.exit();
+        System.exit(0);
     }
 
     public static void main(String[] args) {
