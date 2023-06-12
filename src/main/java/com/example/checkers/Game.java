@@ -12,6 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static com.example.checkers.Board.*;
 import static com.example.checkers.Checkers.getPrimaryStage;
 
@@ -20,6 +23,8 @@ public class Game {
     public static boolean isWhiteTurn = true;
     public static int capturesBlack = 0;
     public static int capturesWhite = 0;
+    public static int whiteSecondsLeft = 300;
+    public static int blackSecondsLeft = 300;
     public Game() {
         printBoard();
         printPawns();
@@ -27,6 +32,38 @@ public class Game {
         Runnable gameloop = new GameLoop();
         Thread thread = new Thread(gameloop);
         thread.start();
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (whiteSecondsLeft > 0 && isWhiteTurn) {
+                    whiteSecondsLeft--;
+                }
+                if (whiteSecondsLeft==0) {
+                    System.out.println("Czas bialych minął!");
+                    timer.cancel();
+                }
+            }
+        };
+        // Uruchomienie timera co 1000 milisekund (1 sekunda)
+        timer.scheduleAtFixedRate(task, 0, 1000);
+
+        Timer timer2 = new Timer();
+        TimerTask task2 = new TimerTask() {
+            @Override
+            public void run() {
+                if (blackSecondsLeft > 0 && !isWhiteTurn) {
+                    blackSecondsLeft--;
+                }
+                if (blackSecondsLeft==0) {
+                    System.out.println("Czas czarnych minął!");
+                    timer.cancel();
+                }
+            }
+        };
+        // Uruchomienie timera co 1000 milisekund (1 sekunda)
+        timer2.scheduleAtFixedRate(task2, 0, 1000);
     }
 
 

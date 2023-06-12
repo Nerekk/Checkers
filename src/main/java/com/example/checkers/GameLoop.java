@@ -16,6 +16,8 @@ public class GameLoop implements Runnable{
     public ImageView turn2 = (ImageView) mainCont.lookup("#turnp2");
     public Label countp1 = (Label) mainCont.lookup("#countp1");
     public Label countp2 = (Label) mainCont.lookup("#countp2");
+    public Label timerp1 = (Label) mainCont.lookup("#timer1");
+    public Label timerp2 = (Label) mainCont.lookup("#timer2");
     @Override
     public void run() {
         while (true) {
@@ -45,5 +47,10 @@ public class GameLoop implements Runnable{
     public void displayCount(int p1, int p2) {
         countp1.setText(String.valueOf(p1));
         countp2.setText(String.valueOf(p2));
+
+        String time = String.format("%02d:%02d", whiteSecondsLeft / 60, whiteSecondsLeft % 60);
+        timerp1.setText(time);
+        time = String.format("%02d:%02d", blackSecondsLeft / 60, blackSecondsLeft % 60);
+        timerp2.setText(time);
     }
 }
