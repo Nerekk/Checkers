@@ -141,6 +141,12 @@ public class Game {
             if (col < SIZE - 2 && row < SIZE - 2  && arrayPawns[col+1][row+1] != null && ((Circle)arrayPawns[col+1][row+1]).getFill() == Color.WHITE && arrayPawns[col+2][row+2] == null) {
                 captures = true;
             }
+            if (col>1 && row>1 && arrayPawns[col-1][row-1] != null && ((Circle)arrayPawns[col-1][row-1]).getFill() == Color.WHITE && arrayPawns[col-2][row-2] == null) {
+                captures = true;
+            }
+            if (col<SIZE-2 && row>1 && arrayPawns[col+1][row-1] != null && ((Circle)arrayPawns[col+1][row-1]).getFill() == Color.WHITE && arrayPawns[col+2][row-2] == null) {
+                captures = true;
+            }
         }
 
         if (pawn.getFill() == Color.WHITE) {
@@ -148,6 +154,12 @@ public class Game {
                 captures = true;
             }
             if (col<SIZE-2 && row>1 && arrayPawns[col+1][row-1] != null && ((Circle)arrayPawns[col+1][row-1]).getFill() == Color.BLACK && arrayPawns[col+2][row-2] == null) {
+                captures = true;
+            }
+            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.BLACK && arrayPawns[col-2][row+2] == null) {
+                captures = true;
+            }
+            if (col < SIZE - 2 && row < SIZE - 2  && arrayPawns[col+1][row+1] != null && ((Circle)arrayPawns[col+1][row+1]).getFill() == Color.BLACK && arrayPawns[col+2][row+2] == null) {
                 captures = true;
             }
         }
@@ -173,6 +185,20 @@ public class Game {
                 rectangle.setFill(Color.INDIANRED);
                 captures = true;
             }
+            if (col>1 && row>1 && arrayPawns[col-1][row-1] != null && ((Circle)arrayPawns[col-1][row-1]).getFill() == Color.WHITE && arrayPawns[col-2][row-2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col-1][row-1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col-2][row-2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+            if (col<SIZE-2 && row>1 && arrayPawns[col+1][row-1] != null && ((Circle)arrayPawns[col+1][row-1]).getFill() == Color.WHITE && arrayPawns[col+2][row-2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col+1][row-1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col+2][row-2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
         }
 
         if (pawn.getFill() == Color.WHITE) {
@@ -187,6 +213,21 @@ public class Game {
                 Rectangle rectangle = (Rectangle) arrayFields[col+1][row-1];
                 rectangle.setFill(Color.RED);
                 rectangle = (Rectangle) arrayFields[col+2][row-2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.BLACK &&
+                    arrayPawns[col-2][row+2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col-1][row+1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col-2][row+2];
+                rectangle.setFill(Color.INDIANRED);
+                captures = true;
+            }
+            if (col < SIZE - 2 && row < SIZE - 2  && arrayPawns[col+1][row+1] != null && ((Circle)arrayPawns[col+1][row+1]).getFill() == Color.BLACK && arrayPawns[col+2][row+2] == null) {
+                Rectangle rectangle = (Rectangle) arrayFields[col+1][row+1];
+                rectangle.setFill(Color.RED);
+                rectangle = (Rectangle) arrayFields[col+2][row+2];
                 rectangle.setFill(Color.INDIANRED);
                 captures = true;
             }
