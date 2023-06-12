@@ -20,6 +20,9 @@ import static com.example.checkers.Checkers.getPrimaryStage;
 
 public class Game {
     private Circle selectedCircle = null;
+    public static boolean isGameON = true;
+    public static boolean whiteWon = false;
+    public static boolean blackWon = false;
     public static boolean isWhiteTurn = true;
     public static int capturesBlack = 0;
     public static int capturesWhite = 0;
@@ -33,6 +36,12 @@ public class Game {
         Thread thread = new Thread(gameloop);
         thread.start();
 
+        timerWhiteInit();
+        timerBlackInit();
+
+    }
+
+    void timerWhiteInit() {
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -41,6 +50,7 @@ public class Game {
                     whiteSecondsLeft--;
                 }
                 if (whiteSecondsLeft==0) {
+                    blackWon = true;
                     System.out.println("Czas bialych minął!");
                     timer.cancel();
                 }
@@ -48,7 +58,9 @@ public class Game {
         };
         // Uruchomienie timera co 1000 milisekund (1 sekunda)
         timer.scheduleAtFixedRate(task, 0, 1000);
+    }
 
+    void timerBlackInit() {
         Timer timer2 = new Timer();
         TimerTask task2 = new TimerTask() {
             @Override
@@ -57,16 +69,15 @@ public class Game {
                     blackSecondsLeft--;
                 }
                 if (blackSecondsLeft==0) {
+                    whiteWon = true;
                     System.out.println("Czas czarnych minął!");
-                    timer.cancel();
+                    timer2.cancel();
                 }
             }
         };
         // Uruchomienie timera co 1000 milisekund (1 sekunda)
         timer2.scheduleAtFixedRate(task2, 0, 1000);
     }
-
-
 
     public Circle getSelectedCircle() {
         return selectedCircle;
