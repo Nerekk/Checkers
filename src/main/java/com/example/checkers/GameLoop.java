@@ -27,7 +27,12 @@ public class GameLoop implements Runnable{
                 turn1.setVisible(false);
                 turn2.setVisible(true);
             }
-//            Platform.runLater(() -> displayCount(capturesWhite, capturesWhite));
+            Platform.runLater(() -> displayCount(capturesWhite, capturesBlack));
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
