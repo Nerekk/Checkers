@@ -23,7 +23,7 @@
                   </Stop>
                   <Stop offset="1.0">
                      <color>
-                        <Color red="0.7763158082962036" green="0.6147031188011169" blue="0.26596003770828247" />
+                        <Color red="0.7699999809265137" green="0.6031666398048401" blue="0.2694999873638153" />
                      </color>
                   </Stop>
                </stops>
@@ -78,6 +78,16 @@
       <Label fx:id="countp1" alignment="CENTER" layoutX="458.0" layoutY="820.0" prefHeight="38.0" prefWidth="33.0" text="0">
          <font>
             <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="infop2" layoutX="523.0" layoutY="46.0" text="Waiting for turn..">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="infop1" layoutX="523.0" layoutY="819.0" text="Waiting for turn..">
+         <font>
+            <Font name="System Bold" size="26.0" />
          </font>
       </Label>
    </children>
