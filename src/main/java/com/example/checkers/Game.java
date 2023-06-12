@@ -19,6 +19,8 @@ import static com.example.checkers.Board.*;
 import static com.example.checkers.Checkers.getPrimaryStage;
 
 public class Game {
+    // 1.PLAYER LOCAL 2.CPU 3. PLAYER ONLINE
+    public static int enemyType;
     private Circle selectedCircle = null;
     public static boolean isGameON = true;
     public static boolean whiteWon = false;
@@ -375,11 +377,12 @@ public class Game {
         }
 
         square.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-
-            int clickedRow = GridPane.getRowIndex(square);
-            int clickedCol = GridPane.getColumnIndex(square);
-            handleCellClick(square, clickedCol, clickedRow);
-            System.out.println("Kliknięto w pole [" + clickedRow + ", " + clickedCol + "]");
+            if (isGameON) {
+                int clickedRow = GridPane.getRowIndex(square);
+                int clickedCol = GridPane.getColumnIndex(square);
+                handleCellClick(square, clickedCol, clickedRow);
+                System.out.println("Kliknięto w pole [" + clickedRow + ", " + clickedCol + "]");
+            }
         });
         return square;
     }
@@ -396,17 +399,19 @@ public class Game {
         }
 
         circle.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            int clickedRow = GridPane.getRowIndex(circle);
-            int clickedCol = GridPane.getColumnIndex(circle);
+            if (isGameON) {
+                int clickedRow = GridPane.getRowIndex(circle);
+                int clickedCol = GridPane.getColumnIndex(circle);
 
-            Rectangle rectangle = (Rectangle) arrayFields[clickedCol][clickedRow];
-            handleCellClick(rectangle, clickedCol, clickedRow);
+                Rectangle rectangle = (Rectangle) arrayFields[clickedCol][clickedRow];
+                handleCellClick(rectangle, clickedCol, clickedRow);
 
 //            GridPane myBoard = getBoard();
 //            myBoard.getChildren().remove(circle);
 //            myBoard.add(circle, clickedCol+1, clickedRow-1);
 
-            System.out.println("Kliknięto w pole [" + clickedRow + ", " + clickedCol + "]");
+                System.out.println("Kliknięto w pole [" + clickedRow + ", " + clickedCol + "]");
+            }
         });
         return circle;
     }
