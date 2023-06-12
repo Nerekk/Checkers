@@ -79,8 +79,8 @@ public class Game {
                 } else {
                     capturesBlack++;
                 }
-
-                isWhiteTurn = !isWhiteTurn;
+                if (checkCaptures()==0)
+                    isWhiteTurn = !isWhiteTurn;
             }
             setSelectedCircle(null);
             resetFieldColors();
