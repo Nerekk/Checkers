@@ -149,6 +149,8 @@ public class Game {
         Node temp = arrayPawns[currentcol][currentrow];
         arrayPawns[currentcol][currentrow] = null;
         arrayPawns[col][row] = temp;
+
+        checkKingTransformation(pawn, row);
     }
 
     public void capturePawn(Circle pawn, int col, int row) {
@@ -286,6 +288,17 @@ public class Game {
         return captures;
     }
 
+    public void checkKingTransformation(Circle pawn, int row) {
+        if (pawn.getFill() == Color.WHITE && row == 0) {
+            pawn.setStroke(KING_STROKE_COLOR);
+            pawn.setStrokeWidth(KING_STROKE_WIDTH);
+        }
+
+        if (pawn.getFill() == Color.BLACK && row == SIZE-1) {
+            pawn.setStroke(KING_STROKE_COLOR);
+            pawn.setStrokeWidth(KING_STROKE_WIDTH);
+        }
+    }
 
     public int checkCaptures() {
         int moves = 0;
