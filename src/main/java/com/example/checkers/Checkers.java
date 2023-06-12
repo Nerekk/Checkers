@@ -23,7 +23,7 @@ public class Checkers extends Application {
         setPrimaryStage(stage);
         FXMLLoader fxmlLoader = new FXMLLoader(Checkers.class.getResource("game-scene.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("Checkers Game");
         stage.setScene(scene);
         stage.show();
         Game game = new Game();
