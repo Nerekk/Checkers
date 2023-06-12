@@ -12,6 +12,8 @@ public class Board {
     public static final Color DARK_TILE_COLOR = Color.DARKRED;
     public static final Color BLACK_PAWN_COLOR = Color.BLACK;
     public static final Color WHITE_PAWN_COLOR = Color.WHITE;
+    public static final Color KING_STROKE_COLOR = Color.YELLOW;
+    public static final int KING_STROKE_WIDTH = 40;
     public static Node[][] arrayFields = new Node[SIZE][SIZE];
     public static Node[][] arrayPawns = new Node[SIZE][SIZE];
 
