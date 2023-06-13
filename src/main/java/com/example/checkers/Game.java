@@ -88,7 +88,6 @@ public class Game {
 
     public void handleSend(int startcol, int startrow, int endcol, int endrow, boolean isKing, boolean isCapture) {
         Packet packet = new Packet(startcol, startrow, endcol, endrow, isKing, isCapture);
-
     }
 
     public Circle getSelectedCircle() {

@@ -51,8 +51,7 @@ public class Client implements Runnable {
 //        }
     }
 
-    public synchronized static void sendPacket() throws IOException {
-        Packet packet = new Packet(2 , 2, 2, 2, false, false);
+    public synchronized static void sendPacket(Packet packet) throws IOException {
         objectOutputStream.writeObject(packet);
         System.out.println("Wysłano do serwera: " + packet.startcol + " " + packet.startrow);
     }
