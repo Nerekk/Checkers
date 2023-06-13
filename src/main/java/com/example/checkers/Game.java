@@ -121,6 +121,26 @@ public class Game {
         }
     }
 
+    public void handleMoveKing(Rectangle rectangle, int col, int row) {
+        if (rectangle.getFill() == Color.LIGHTBLUE)
+        {
+            movePawn(getSelectedCircle(), col, row);
+            isWhiteTurn = !isWhiteTurn;
+        } else if (rectangle.getFill() == Color.INDIANRED) {
+            captureKing(getSelectedCircle(), col, row);
+
+            if (isWhiteTurn) {
+                capturesWhite++;
+            } else {
+                capturesBlack++;
+            }
+            if (checkCaptures()==0)
+                isWhiteTurn = !isWhiteTurn;
+        }
+        setSelectedCircle(null);
+        resetFieldColors();
+    }
+
     public void handleMovePawn(Rectangle rectangle, int col, int row) {
         if (rectangle.getFill() == Color.LIGHTBLUE)
         {
@@ -157,6 +177,61 @@ public class Game {
         checkKingTransformation(pawn, row);
     }
 
+    public void captureKing(Circle pawn, int col, int row) {
+        GridPane myBoard = getBoard();
+        Point2D p = findCoords(pawn);
+        int currentcol = (int) p.getX();
+        int currentrow = (int) p.getY();
+
+        movePawn(pawn, col, row);
+
+        Circle capturedPawn = null;
+        if (col>currentcol && row>currentrow) {
+            for (int c = currentcol, r = currentrow; c<col && r<row; c++, r++)
+            {
+                if (arrayPawns[c][r]!=null) {
+                    capturedPawn = (Circle) arrayPawns[c][r];
+                    myBoard.getChildren().remove(capturedPawn);
+                    arrayPawns[c][r] = null;
+                    break;
+                }
+            }
+
+        } else if (col<currentcol && row>currentrow) {
+            for (int c = currentcol, r = currentrow; c>col && r<row; c--, r++)
+            {
+                if (arrayPawns[c][r]!=null) {
+                    capturedPawn = (Circle) arrayPawns[c][r];
+                    myBoard.getChildren().remove(capturedPawn);
+                    arrayPawns[c][r] = null;
+                    break;
+                }
+            }
+
+        } else if (col>currentcol && row<currentrow) {
+            for (int c = currentcol, r = currentrow; c<col && r>row; c++, r--)
+            {
+                if (arrayPawns[c][r]!=null) {
+                    capturedPawn = (Circle) arrayPawns[c][r];
+                    myBoard.getChildren().remove(capturedPawn);
+                    arrayPawns[c][r] = null;
+                    break;
+                }
+            }
+
+        } else if (col<currentcol && row<currentrow) {
+            for (int c = currentcol, r = currentrow; c>col && r>row; c--, r--)
+            {
+                if (arrayPawns[c][r]!=null) {
+                    capturedPawn = (Circle) arrayPawns[c][r];
+                    myBoard.getChildren().remove(capturedPawn);
+                    arrayPawns[c][r] = null;
+                    break;
+                }
+            }
+        }
+    }
+
     public void capturePawn(Circle pawn, int col, int row) {
         GridPane myBoard = getBoard();
         Point2D p = findCoords(pawn);
@@ -186,6 +261,290 @@ public class Game {
             myBoard.getChildren().remove(capturedPawn);
             arrayPawns[currentcol-1][currentrow-1] = null;
         }
+    }
+
+    public boolean isCapturePossibleCheckKing(Circle pawn, int col, int row) {
+        boolean captures = false;
+        if (pawn.getFill() == Color.BLACK) {
+            //sprawdzenie lewo dol
+            if (col > 1 && row < SIZE - 2) {
+                for (int c = col, r = row; c>1 && r<SIZE-2; c--, r++) {
+                    if (arrayPawns[c-1][r+1] != null) {
+                        if (((Circle)arrayPawns[c-1][r+1]).getFill() == Color.WHITE && arrayPawns[c-2][r+2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // prawo dol
+            if (col < SIZE - 2 && row < SIZE - 2) {
+                for (int c = col, r = row; c<SIZE-2 && r<SIZE-2; c++, r++) {
+                    if (arrayPawns[c+1][r+1] != null) {
+                        if (((Circle)arrayPawns[c+1][r+1]).getFill() == Color.WHITE && arrayPawns[c+2][r+2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // lewo gora
+            if (col>1 && row>1) {
+                for (int c = col, r = row; c>1 && r>1; c--, r--) {
+                    if (arrayPawns[c-1][r-1] != null) {
+                        if (((Circle)arrayPawns[c-1][r-1]).getFill() == Color.WHITE && arrayPawns[c-2][r-2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // prawo gora
+            if (col<SIZE-2 && row>1) {
+                for (int c = col, r = row; c<SIZE-2 && r>1; c++, r--) {
+                    if (arrayPawns[c+1][r-1] != null) {
+                        if (((Circle)arrayPawns[c+1][r-1]).getFill() == Color.WHITE && arrayPawns[c+2][r-2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        if (pawn.getFill() == Color.WHITE) {
+            //sprawdzenie lewo dol
+            if (col > 1 && row < SIZE - 2) {
+                for (int c = col, r = row; c>1 && r<SIZE-2; c--, r++) {
+                    if (arrayPawns[c-1][r+1] != null) {
+                        if (((Circle)arrayPawns[c-1][r+1]).getFill() == Color.BLACK && arrayPawns[c-2][r+2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // prawo dol
+            if (col < SIZE - 2 && row < SIZE - 2) {
+                for (int c = col, r = row; c<SIZE-2 && r<SIZE-2; c++, r++) {
+                    if (arrayPawns[c+1][r+1] != null) {
+                        if (((Circle)arrayPawns[c+1][r+1]).getFill() == Color.BLACK && arrayPawns[c+2][r+2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // lewo gora
+            if (col>1 && row>1) {
+                for (int c = col, r = row; c>1 && r>1; c--, r--) {
+                    if (arrayPawns[c-1][r-1] != null) {
+                        if (((Circle)arrayPawns[c-1][r-1]).getFill() == Color.BLACK && arrayPawns[c-2][r-2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // prawo gora
+            if (col<SIZE-2 && row>1) {
+                for (int c = col, r = row; c<SIZE-2 && r>1; c++, r--) {
+                    if (arrayPawns[c+1][r-1] != null) {
+                        if (((Circle)arrayPawns[c+1][r-1]).getFill() == Color.BLACK && arrayPawns[c+2][r-2] == null) {
+                            captures = true;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return captures;
+    }
+
+    public boolean setCapturePossibleKing(Circle pawn, int col, int row) {
+        boolean captures = false;
+        if (pawn.getFill() == Color.BLACK) {
+            //sprawdzenie lewo dol
+            if (col > 1 && row < SIZE - 2) {
+                for (int c = col, r = row; c>1 && r<SIZE-2; c--, r++) {
+                    if (arrayPawns[c-1][r+1] != null) {
+                        if (arrayPawns[c-1][r+1] != null && captures) break;
+
+                        if (arrayPawns[c-1][r+1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r+1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c-1][r+1]).getFill() == Color.WHITE && arrayPawns[c-2][r+2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r+1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+            // prawo dol
+            if (col < SIZE - 2 && row < SIZE - 2) {
+                for (int c = col, r = row; c<SIZE-2 && r<SIZE-2; c++, r++) {
+                    if (arrayPawns[c+1][r+1] != null) {
+                        if (arrayPawns[c+1][r+1] != null && captures) break;
+
+                        if (arrayPawns[c+1][r+1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r+1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c+1][r+1]).getFill() == Color.WHITE && arrayPawns[c+2][r+2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r+1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+            // lewo gora
+            if (col>1 && row>1) {
+                for (int c = col, r = row; c>1 && r>1; c--, r--) {
+                    if (arrayPawns[c-1][r-1] != null) {
+                        if (arrayPawns[c-1][r-1] != null && captures) break;
+
+                        if (arrayPawns[c-1][r-1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r-1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c-1][r-1]).getFill() == Color.WHITE && arrayPawns[c-2][r-2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r-1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+            // prawo gora
+            if (col<SIZE-2 && row>1) {
+                for (int c = col, r = row; c<SIZE-2 && r>1; c++, r--) {
+                    if (arrayPawns[c+1][r-1] != null) {
+                        if (arrayPawns[c+1][r-1] != null && captures) break;
+
+                        if (arrayPawns[c+1][r-1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r-1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c+1][r-1]).getFill() == Color.WHITE && arrayPawns[c+2][r-2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r-1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        if (pawn.getFill() == Color.WHITE) {
+            //sprawdzenie lewo dol
+            if (col > 1 && row < SIZE - 2) {
+                for (int c = col, r = row; c>1 && r<SIZE-2; c--, r++) {
+                    if (arrayPawns[c-1][r+1] != null) {
+                        if (arrayPawns[c-1][r+1] != null && captures) break;
+
+                        if (arrayPawns[c-1][r+1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r+1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c-1][r+1]).getFill() == Color.BLACK && arrayPawns[c-2][r+2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r+1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+            // prawo dol
+            if (col < SIZE - 2 && row < SIZE - 2) {
+                for (int c = col, r = row; c<SIZE-2 && r<SIZE-2; c++, r++) {
+                    if (arrayPawns[c+1][r+1] != null) {
+                        if (arrayPawns[c+1][r+1] != null && captures) break;
+
+                        if (arrayPawns[c+1][r+1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r+1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c+1][r+1]).getFill() == Color.BLACK && arrayPawns[c+2][r+2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r+1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+            // lewo gora
+            if (col>1 && row>1) {
+                for (int c = col, r = row; c>1 && r>1; c--, r--) {
+                    if (arrayPawns[c-1][r-1] != null) {
+                        if (arrayPawns[c-1][r-1] != null && captures) break;
+
+                        if (arrayPawns[c-1][r-1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r-1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c-1][r-1]).getFill() == Color.BLACK && arrayPawns[c-2][r-2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c-1][r-1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+
+            // prawo gora
+            if (col<SIZE-2 && row>1) {
+                for (int c = col, r = row; c<SIZE-2 && r>1; c++, r--) {
+                    if (arrayPawns[c+1][r-1] != null) {
+                        if (arrayPawns[c+1][r-1] != null && captures) break;
+
+                        if (arrayPawns[c+1][r-1] == null && captures) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r-1];
+                            rectangle.setFill(Color.INDIANRED);
+                        }
+
+                        if (((Circle)arrayPawns[c+1][r-1]).getFill() == Color.BLACK && arrayPawns[c+2][r-2] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[c+1][r-1];
+                            rectangle.setFill(Color.RED);
+                            captures = true;
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return captures;
     }
 
     public boolean isCapturePossibleCheck(Circle pawn, int col, int row) {
@@ -226,8 +585,7 @@ public class Game {
     public boolean setCapturePossible(Circle pawn, int col, int row) {
         boolean captures = false;
         if (pawn.getFill() == Color.BLACK) {
-            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.WHITE &&
-                    arrayPawns[col-2][row+2] == null) {
+            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.WHITE && arrayPawns[col-2][row+2] == null) {
                 Rectangle rectangle = (Rectangle) arrayFields[col-1][row+1];
                 rectangle.setFill(Color.RED);
                 rectangle = (Rectangle) arrayFields[col-2][row+2];
@@ -272,8 +630,7 @@ public class Game {
                 rectangle.setFill(Color.INDIANRED);
                 captures = true;
             }
-            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.BLACK &&
-                    arrayPawns[col-2][row+2] == null) {
+            if (col>1 && row<SIZE-2 && arrayPawns[col-1][row+1] != null && ((Circle)arrayPawns[col-1][row+1]).getFill() == Color.BLACK && arrayPawns[col-2][row+2] == null) {
                 Rectangle rectangle = (Rectangle) arrayFields[col-1][row+1];
                 rectangle.setFill(Color.RED);
                 rectangle = (Rectangle) arrayFields[col-2][row+2];
@@ -312,7 +669,9 @@ public class Game {
                 if (arrayPawns[col][row]==null) continue;
                 pawn = (Circle) arrayPawns[col][row];
                 if (isWhiteTurn && pawn.getFill() == Color.WHITE && isCapturePossibleCheck(pawn, col, row)) moves++;
+                if (isWhiteTurn && pawn.getFill() == Color.WHITE && pawn.getStroke().equals(KING_STROKE_COLOR) && isCapturePossibleCheckKing(pawn, col, row)) moves++;
                 if (!isWhiteTurn && pawn.getFill() == Color.BLACK && isCapturePossibleCheck(pawn, col, row)) moves++;
+                if (!isWhiteTurn && pawn.getFill() == Color.BLACK && pawn.getStroke().equals(KING_STROKE_COLOR) && isCapturePossibleCheckKing(pawn, col, row)) moves++;
             }
         }
         return moves;
@@ -329,6 +688,52 @@ public class Game {
                     rectangle.setFill(Color.DARKRED);
                 }
             }
+        }
+    }
+
+    // DO ZROBIENIA PĘTLE
+    public int setPossibleMovesKing(Circle pawn, int col, int row) {
+
+        if (checkCaptures()==0) {
+
+            int moves = 0;
+            if (pawn.getFill() == Color.BLACK) {
+                if (col > 0 && row < SIZE - 1) {
+                    for (int c = col, r = row; c>0 && r<SIZE-1; c--, r++)
+                    {
+                        if (arrayPawns[col - 1][row + 1] == null) {
+                            Rectangle rectangle = (Rectangle) arrayFields[col - 1][row + 1];
+                            rectangle.setFill(Color.LIGHTBLUE);
+                            moves++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                }
+                if (col < SIZE - 1 && row < SIZE - 1 && arrayPawns[col + 1][row + 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col + 1][row + 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
+            }
+
+            if (pawn.getFill() == Color.WHITE) {
+                if (col > 0 && row > 0 && arrayPawns[col - 1][row - 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col - 1][row - 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
+                if (col < SIZE - 1 && row > 0 && arrayPawns[col + 1][row - 1] == null) {
+                    Rectangle rectangle = (Rectangle) arrayFields[col + 1][row - 1];
+                    rectangle.setFill(Color.LIGHTBLUE);
+                    moves++;
+                }
+            }
+            return moves;
+        } else {
+            setCapturePossibleKing(pawn, col, row);
+            return 1;
         }
     }
 
