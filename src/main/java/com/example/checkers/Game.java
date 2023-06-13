@@ -117,24 +117,28 @@ public class Game {
         }
         //Drugie klikniecie
         else {
-            if (rectangle.getFill() == Color.LIGHTBLUE)
-            {
-                movePawn(getSelectedCircle(), col, row);
-                isWhiteTurn = !isWhiteTurn;
-            } else if (rectangle.getFill() == Color.INDIANRED) {
-                capturePawn(getSelectedCircle(), col, row);
-
-                if (isWhiteTurn) {
-                    capturesWhite++;
-                } else {
-                    capturesBlack++;
-                }
-                if (checkCaptures()==0)
-                    isWhiteTurn = !isWhiteTurn;
-            }
-            setSelectedCircle(null);
-            resetFieldColors();
+            handleMovePawn(rectangle, col, row);
         }
+    }
+
+    public void handleMovePawn(Rectangle rectangle, int col, int row) {
+        if (rectangle.getFill() == Color.LIGHTBLUE)
+        {
+            movePawn(getSelectedCircle(), col, row);
+            isWhiteTurn = !isWhiteTurn;
+        } else if (rectangle.getFill() == Color.INDIANRED) {
+            capturePawn(getSelectedCircle(), col, row);
+
+            if (isWhiteTurn) {
+                capturesWhite++;
+            } else {
+                capturesBlack++;
+            }
+            if (checkCaptures()==0)
+                isWhiteTurn = !isWhiteTurn;
+        }
+        setSelectedCircle(null);
+        resetFieldColors();
     }
 
     public void movePawn(Circle pawn, int col, int row) {
