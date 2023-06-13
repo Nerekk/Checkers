@@ -38,12 +38,11 @@ public class Game {
         Thread thread = new Thread(gameloop);
         thread.start();
 
-        timerWhiteInit();
-        timerBlackInit();
+        timerInit();
 
     }
 
-    void timerWhiteInit() {
+    void timerInit() {
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -53,31 +52,21 @@ public class Game {
                 }
                 if (whiteSecondsLeft==0) {
                     blackWon = true;
-                    System.out.println("Czas bialych minął!");
                     timer.cancel();
                 }
-            }
-        };
-        timer.scheduleAtFixedRate(task, 0, 1000);
-    }
-
-    void timerBlackInit() {
-        Timer timer2 = new Timer();
-        TimerTask task2 = new TimerTask() {
-            @Override
-            public void run() {
                 if (blackSecondsLeft > 0 && !isWhiteTurn) {
                     blackSecondsLeft--;
                 }
                 if (blackSecondsLeft==0) {
                     whiteWon = true;
-                    System.out.println("Czas czarnych minął!");
-                    timer2.cancel();
+                    timer.cancel();
                 }
+
             }
         };
-        timer2.scheduleAtFixedRate(task2, 0, 1000);
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
+
 
     public Circle getSelectedCircle() {
         return selectedCircle;
