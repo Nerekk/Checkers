@@ -872,7 +872,6 @@ public class Game {
         }
     }
 
-
     public void printPawns(){
         Scene currentScene = getPrimaryStage().getScene();
         String containerId = "gamescene";
