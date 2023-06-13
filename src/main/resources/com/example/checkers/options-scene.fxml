@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="274.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.checkers.CheckersController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="274.0" stroke="BLACK" strokeType="INSIDE" width="600.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.9473684430122375" green="0.8122807145118713" blue="0.5614035129547119" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7200000286102295" green="0.46861714124679565" blue="0.04320000112056732" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Rectangle>
+      <Button fx:id="serverButton" layoutX="61.0" layoutY="173.0" mnemonicParsing="false" onAction="#prepareGameServer" prefHeight="31.0" prefWidth="116.0" text="Server">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="localButton" layoutX="242.0" layoutY="173.0" mnemonicParsing="false" onAction="#prepareGameLocal" prefHeight="64.0" prefWidth="116.0" text="Play">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="cpuButton" layoutX="416.0" layoutY="173.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="116.0" text="CPU">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="clientButton" layoutX="61.0" layoutY="208.0" mnemonicParsing="false" onAction="#prepareGameClient" prefHeight="31.0" prefWidth="116.0" text="Client">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Label layoutX="50.0" layoutY="39.0" text="Game mode select">
+         <font>
+            <Font name="System Italic" size="63.0" />
+         </font>
+      </Label>
+      <Label layoutX="90.0" layoutY="137.0" text="Online">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="277.0" layoutY="137.0" text="Local">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="430.0" layoutY="137.0" text="Computer">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
