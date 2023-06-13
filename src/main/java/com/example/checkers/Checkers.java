@@ -8,6 +8,8 @@ import javafx.application.Platform;
 
 import java.io.IOException;
 
+import static com.example.checkers.CheckersController.*;
+
 
 public class Checkers extends Application {
     private static Stage primaryStage;
@@ -22,12 +24,12 @@ public class Checkers extends Application {
     public void start(Stage stage) throws IOException {
         setPrimaryStage(stage);
         stage.setResizable(false);
-        FXMLLoader fxmlLoader = new FXMLLoader(Checkers.class.getResource("game-scene.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+//        FXMLLoader fxmlLoader = new FXMLLoader(Checkers.class.getResource("game-scene.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Checkers Game");
-        stage.setScene(scene);
+        setScene(OPTIONSCENE);
         stage.show();
-        Game game = new Game();
+//        Game game = new Game();
         primaryStage.setOnCloseRequest(event -> {
             closeApp();
         });

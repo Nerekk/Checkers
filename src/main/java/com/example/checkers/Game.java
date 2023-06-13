@@ -1,5 +1,6 @@
 package com.example.checkers;
 
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -17,10 +18,12 @@ import java.util.TimerTask;
 
 import static com.example.checkers.Board.*;
 import static com.example.checkers.Checkers.getPrimaryStage;
+import static com.example.checkers.Client.sendPacket;
 
 public class Game {
-    // 1.PLAYER LOCAL 2.PLAYER ONLINE 3. CPU
+    // 0.PLAYER LOCAL 1.PLAYER ONLINE 2. CPU
     public static int enemyType;
+    public static boolean isServer;
     private Circle selectedCircle = null;
     public static boolean isGameON = true;
     public static boolean whiteWon = false;
@@ -30,16 +33,32 @@ public class Game {
     public static int capturesWhite = 0;
     public static int whiteSecondsLeft = 300;
     public static int blackSecondsLeft = 300;
-    public Game() {
+    public Game(boolean serverbool, int enemy) {
+        isServer = serverbool;
+        enemyType = enemy;
         printBoard();
         printPawns();
+        if (isServer && enemyType==1) {
+            Thread server = new Thread(new Server(8888));
+            server.start();
+        }
+        if (isServer || enemyType==0 || enemyType==2)
+        {
+            Runnable gameloop = new GameLoop();
+            Thread thread = new Thread(gameloop);
+            thread.start();
 
-        Runnable gameloop = new GameLoop();
-        Thread thread = new Thread(gameloop);
-        thread.start();
+            timerInit();
+        }
 
-        timerInit();
+        if (!isServer && enemyType==1) {
+            Runnable gameloop = new GameLoop();
+            Thread thread = new Thread(gameloop);
+            thread.start();
 
+            Thread client = new Thread(new Client("localhost", 8888));
+            client.start();
+        }
     }
 
     void timerInit() {
@@ -67,6 +86,10 @@ public class Game {
         timer.scheduleAtFixedRate(task, 0, 1000);
     }
 
+    public void handleSend(int startcol, int startrow, int endcol, int endrow, boolean isKing, boolean isCapture) {
+        Packet packet = new Packet(startcol, startrow, endcol, endrow, isKing, isCapture);
+
+    }
 
     public Circle getSelectedCircle() {
         return selectedCircle;
@@ -82,7 +105,6 @@ public class Game {
     }
 
     public void handleCellClick(Rectangle rectangle, int col, int row) {
-
         handlePawnToPawnClick(col, row);
 
         if (isFirstClick(col, row)) {
