@@ -21,6 +21,7 @@ public class Checkers extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         setPrimaryStage(stage);
+        stage.setResizable(false);
         FXMLLoader fxmlLoader = new FXMLLoader(Checkers.class.getResource("game-scene.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Checkers Game");
