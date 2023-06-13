@@ -1,6 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="gamescene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" />
+<AnchorPane fx:id="gamescene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="900.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="20.0" width="800.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.9473684430122375" green="0.8029239773750305" blue="0.4912280738353729" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7699999809265137" green="0.6031666398048401" blue="0.2694999873638153" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Rectangle>
+      <Label layoutX="80.0" layoutY="815.0" text="Player 1">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="player2" layoutX="80.0" layoutY="40.0" text="Player 2">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="turnp2" fitHeight="32.0" fitWidth="27.0" layoutX="53.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/play.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="turnp1" fitHeight="32.0" fitWidth="27.0" layoutX="53.0" layoutY="825.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/play.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="timer2" layoutX="221.0" layoutY="31.0" text="00:00">
+         <font>
+            <Font size="45.0" />
+         </font>
+      </Label>
+      <Label fx:id="timer1" layoutX="221.0" layoutY="806.0" text="00:00">
+         <font>
+            <Font size="45.0" />
+         </font>
+      </Label>
+      <Label layoutX="349.0" layoutY="46.0" text="Captures:">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="countp2" alignment="CENTER" layoutX="458.0" layoutY="47.0" prefHeight="38.0" prefWidth="33.0" text="0">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="349.0" layoutY="819.0" text="Captures:">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="countp1" alignment="CENTER" layoutX="458.0" layoutY="820.0" prefHeight="38.0" prefWidth="33.0" text="0">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="infop2" layoutX="523.0" layoutY="46.0" text="Waiting for turn..">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="infop1" layoutX="523.0" layoutY="819.0" text="Waiting for turn..">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
